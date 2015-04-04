@@ -47,10 +47,13 @@ class ga():
     return ''.join(random.choice(chars) for _ in range(size))
 
   def update(self, data):
-    if self.__addon.getSetting("ga") != 'true':
-      return
     data.update(self.__payload)
     data['z'] = self.__rnd_gen()
     data['ua'] = self.__mkua()
-    data['cid'] = self.__addon.getSetting("uid")
+    data['cid'] = self.__addon.getSetting('uid')
+    data['aiid'] = u'-'.join([xbmc.getInfoLabel('System.FriendlyName').split()[0], xbmc.getInfoLabel('System.BuildVersion')])
+    if self.__addon.getSetting('dbg') == 'true':
+      print ">>> %s -> %s <<<" % (self.__addon.getAddonInfo('name'), data)
+    if self.__addon.getSetting('ga') != 'true':
+      return None
     return requests.post(self.__url, data=data)
