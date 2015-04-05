@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 import os, sys
 import requests
 import string
@@ -46,14 +47,31 @@ class ga():
   def __rnd_gen(self, size=6, chars=string.ascii_letters + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
-  def update(self, data):
+  def __except_report(self, e):
+    import traceback
+    l = '%s-' % e[0]
+    for file, line, func, text in traceback.extract_tb(e[2]):
+      l += '%d %s:' % (line, os.path.split(file)[1])
+    return l[:150]
+
+  def update(self, data, crash):
     data.update(self.__payload)
     data['z'] = self.__rnd_gen()
+    data['t'] = 'event'
     data['ua'] = self.__mkua()
     data['cid'] = self.__addon.getSetting('uid')
+    data['uid'] = self.__addon.getSetting('uid')
     data['aiid'] = u'-'.join([xbmc.getInfoLabel('System.FriendlyName').split()[0], xbmc.getInfoLabel('System.BuildVersion')])
+
+    if crash is not None:
+      data['t'] = 'exception'
+      data['exd'] = self.__except_report(crash)
+      data['exf'] = '1'
+
     if self.__addon.getSetting('dbg') == 'true':
       print ">>> %s -> %s <<<" % (self.__addon.getAddonInfo('name'), data)
+
     if self.__addon.getSetting('ga') != 'true':
       return None
+
     return requests.post(self.__url, data=data)
