@@ -55,6 +55,7 @@ class ga():
     return l[:150]
 
   def update(self, data, crash):
+    ret = None
     data.update(self.__payload)
     data['z'] = self.__rnd_gen()
     data['t'] = 'event'
@@ -72,6 +73,11 @@ class ga():
       print ">>> %s -> %s <<<" % (self.__addon.getAddonInfo('name'), data)
 
     if self.__addon.getSetting('ga') != 'true':
-      return None
+      return ret
 
-    return requests.post(self.__url, data=data)
+    try:
+      ret = requests.post(self.__url, data=data)
+    except:
+      pass
+
+    return ret
