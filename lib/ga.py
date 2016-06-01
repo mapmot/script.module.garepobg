@@ -22,7 +22,6 @@ class ga():
     if self.__addon.getSetting("firstrun") == "true":
       self.__addon.setSetting("firstrun", "false")
       self.__addon.setSetting("uid", self.__rnd_gen(size=32))
-    
 
   def __get_platform(self):
     platforms = {
@@ -70,7 +69,7 @@ class ga():
       data['exf'] = '1'
 
     if self.__addon.getSetting('dbg') == 'true':
-      print ">>> %s -> %s <<<" % (self.__addon.getAddonInfo('name'), data)
+      xbmc.log((u">>> %s -> %s <<<" % (self.__addon.getAddonInfo('name'), data,)).encode('utf-8'),level=xbmc.LOGNOTICE)
 
     if self.__addon.getSetting('ga') != 'true':
       return ret
