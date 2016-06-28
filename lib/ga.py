@@ -12,11 +12,11 @@ import xbmcgui
 import xbmcplugin
 
 class ga():
-  def __init__ (self):
+  def __init__ (self, tid = 'UA-61449088-3'):
     self.__addon = xbmcaddon.Addon('script.module.garepobg')
     self.__payload = {
         'v': '1',
-        'tid': 'UA-61449088-3',
+        'tid': tid,
       }
     self.__url = 'http://www.google-analytics.com/collect?payload_data'
     if self.__addon.getSetting("firstrun") == "true":
