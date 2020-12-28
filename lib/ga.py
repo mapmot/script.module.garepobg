@@ -32,7 +32,7 @@ class ga():
       "android": "Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K"
       }
 
-    for platform, ua_platform_name in platforms.items():
+    for platform, ua_platform_name in list(platforms.items()):
       if xbmc.getCondVisibility("System.Platform.%s" % platform):
         if platform == "Windows":
           import sys
@@ -61,7 +61,7 @@ class ga():
     data['ua'] = self.__mkua()
     data['cid'] = self.__addon.getSetting('uid')
     data['uid'] = self.__addon.getSetting('uid')
-    data['aiid'] = u'-'.join([xbmc.getInfoLabel('System.FriendlyName').split()[0], xbmc.getInfoLabel('System.BuildVersion')])
+    data['aiid'] = '-'.join([xbmc.getInfoLabel('System.FriendlyName').split()[0], xbmc.getInfoLabel('System.BuildVersion')])
 
     if crash is not None:
       data['t'] = 'exception'
@@ -69,7 +69,7 @@ class ga():
       data['exf'] = '1'
 
     if self.__addon.getSetting('dbg') == 'true':
-      xbmc.log((u">>> %s -> %s <<<" % (self.__addon.getAddonInfo('name'), data,)).encode('utf-8'),level=xbmc.LOGNOTICE)
+      xbmc.log((">>> %s -> %s <<<" % (self.__addon.getAddonInfo('name'), data,)).encode('utf-8'),level=xbmc.LOGNOTICE)
 
     if self.__addon.getSetting('ga') != 'true':
       return ret
